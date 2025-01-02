@@ -1,8 +1,6 @@
 #!/bin/bash
 
 # DIRECTORIES
-INCLUDE_DIR="vendor/SFML/include"
-LIBRARY_DIR="vendor/SFML/lib"
 SOURCE_DIR="src"
 BINARY_DEBUG_DIR="build/debug/bin"
 BINARY_RELEASE_DIR="build/release/bin"
@@ -18,14 +16,16 @@ OBJECT_FILES_RELEASE=($(for file in "${SOURCE_FILES[@]}"; do echo "$OBJECT_RELEA
 CXX="g++"
 
 # COMPILER FLAGS
-CXX_FLAGS="-m64 -pedantic-errors -std=c++23 -Wall -Wextra -Wsign-conversion -I$INCLUDE_DIR -DSFML_STATIC"
-CXX_FLAGS_DEBUG="-ggdb -DDEBUG_BUILD"
-CXX_FLAGS_RELEASE="-O2 -DNDEBUG -DRELEASE_BUILD"
-LIBRARY_FLAGS_DEBUG="-L$LIBRARY_DIR -lstdc++exp \
+INCLUDE_FLAGS="-Ivendor/SFML/include -Isrc"
+LIBRARY_FLAGS="-Lvendor/SFML/lib"
+LIBRARY_FLAGS_DEBUG="$LIBRARY_FLAGS -lstdc++exp \
                                     -lsfml-graphics-d -lsfml-window-d -lsfml-system-d -lsfml-audio-d -lsfml-network-d"
 
-LIBRARY_FLAGS_RELEASE="-L$LIBRARY_DIR -lstdc++exp \
-                                    -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network"
+LIBRARY_FLAGS_RELEASE="$LIBRARY_FLAGS -lstdc++exp \
+                                      -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network"
+CXX_FLAGS="-m64 -pedantic-errors -std=c++23 -Wall -Wextra -Wsign-conversion $INCLUDE_FLAGS"
+CXX_FLAGS_DEBUG="-ggdb -DDEBUG_BUILD"
+CXX_FLAGS_RELEASE="-O2 -DNDEBUG -DRELEASE_BUILD"
 
 # EXECUTABLE TARGET
 TARGET="Age"
